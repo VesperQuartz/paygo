@@ -3,6 +3,7 @@ import { ProductSearch } from "@/components/product-search";
 import { Switch } from "@/components/ui/switch";
 import type { SearchFetcher } from "@/hooks/use-product-search";
 import { channel3ProductPageCodec, throwOnChannel3Error } from "@/lib/channel3/wire";
+import { parseSearchRouteParams } from "@/lib/search-params";
 import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
@@ -58,17 +59,7 @@ const SearchPage = () => {
 
 export const Route = createFileRoute("/(dashboard)/search")({
   component: SearchPage,
-  // Keep `q` absent (not "") when there is no query. The URL search parser
-  // drops empty-string params, so manufacturing `q: ""` would make every
-  // request look out of date and trigger an endless redirect loop.
-  validateSearch: (search: Record<string, unknown>): { q?: string; deep?: boolean } => {
-    const q = typeof search.q === "string" && search.q.length > 0 ? search.q : undefined;
-    const deep = search.deep === true || search.deep === "1" || search.deep === "true";
-    return {
-      ...(q === undefined ? {} : { q }),
-      ...(deep ? { deep } : {}),
-    };
-  },
+  validateSearch: parseSearchRouteParams,
   head: () =>
     pageHead({
       title: "Search products — PayGo",
