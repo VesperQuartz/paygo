@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { jsonLdScript, pageHead, websiteJsonLd } from "@/lib/seo";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
@@ -109,13 +110,12 @@ const LandingPage = () => {
 export const Route = createFileRoute("/(dashboard)/")({
   component: LandingPage,
   head: () => ({
-    meta: [
-      { title: "PayGo — never overpay" },
-      {
-        name: "description",
-        content:
-          "Search products across every store, compare live offers, and know the exact moment to buy.",
-      },
-    ],
+    ...pageHead({
+      title: "PayGo — never overpay",
+      description:
+        "Search products across every store, compare live offers, and know the exact moment to buy.",
+      path: "/",
+    }),
+    scripts: [jsonLdScript(websiteJsonLd())],
   }),
 });

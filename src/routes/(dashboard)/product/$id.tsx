@@ -26,6 +26,7 @@ import {
   channel3ProductPageCodec,
   throwOnChannel3Error,
 } from "@/lib/channel3/wire";
+import { productHead } from "@/lib/seo";
 import { watchlistStateCodec } from "@/lib/watchlist/wire";
 import { createFileRoute, notFound, type ErrorComponentProps } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
@@ -210,7 +211,5 @@ export const Route = createFileRoute("/(dashboard)/product/$id")({
           : { signedIn: false, watched: false },
     };
   },
-  head: () => ({
-    meta: [{ title: "Product — PayGo" }],
-  }),
+  head: ({ params, loaderData }) => productHead(loaderData?.product, `/product/${params.id}`),
 });

@@ -6,6 +6,7 @@ import { FieldError } from "@/components/form-error";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import { pageHead } from "@/lib/seo";
 
 const formSchema = z.object({
   name: z.string().min(1, "Tell us what to call you."),
@@ -157,4 +158,11 @@ const SignUpPage = () => {
 
 export const Route = createFileRoute("/(auth)/signup")({
   component: SignUpPage,
+  head: () =>
+    pageHead({
+      title: "Create account — PayGo",
+      description: "Create a PayGo account to track products and get price-drop alerts.",
+      path: "/signup",
+      robots: "noindex, nofollow",
+    }),
 });

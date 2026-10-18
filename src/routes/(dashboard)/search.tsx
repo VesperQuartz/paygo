@@ -3,6 +3,7 @@ import { ProductSearch } from "@/components/product-search";
 import { Switch } from "@/components/ui/switch";
 import type { SearchFetcher } from "@/hooks/use-product-search";
 import { channel3ProductPageCodec, throwOnChannel3Error } from "@/lib/channel3/wire";
+import { pageHead } from "@/lib/seo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback } from "react";
@@ -62,7 +63,11 @@ export const Route = createFileRoute("/(dashboard)/search")({
     const deep = search.deep === true || search.deep === "1" || search.deep === "true";
     return deep ? { q, deep } : { q };
   },
-  head: () => ({
-    meta: [{ title: "Search — PayGo" }],
-  }),
+  head: () =>
+    pageHead({
+      title: "Search products — PayGo",
+      description:
+        "Search products across stores and compare every live offer side by side, cheapest first.",
+      path: "/search",
+    }),
 });

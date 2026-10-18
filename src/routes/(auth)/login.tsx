@@ -6,6 +6,7 @@ import { FieldError } from "@/components/form-error";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import { pageHead } from "@/lib/seo";
 
 const formSchema = z.object({
   email: z.email(),
@@ -162,4 +163,11 @@ export const Route = createFileRoute("/(auth)/login")({
   validateSearch: z.object({
     redirect: z.string().optional(),
   }),
+  head: () =>
+    pageHead({
+      title: "Sign in — PayGo",
+      description: "Sign in to PayGo to track prices and get alerts the moment they drop.",
+      path: "/login",
+      robots: "noindex, nofollow",
+    }),
 });

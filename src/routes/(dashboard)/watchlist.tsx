@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/components/ui/toast";
 import { alertsRunCodec } from "@/lib/alerts/wire";
 import { formatCurrency } from "@/lib/format";
+import { pageHead } from "@/lib/seo";
 import { PRO_PRICE_LABEL } from "@/lib/subscription/plan";
 import { proStatusCodec } from "@/lib/subscription/wire";
 import { WatchlistUnauthenticated } from "@/lib/watchlist/errors";
@@ -236,7 +237,11 @@ export const Route = createFileRoute("/(dashboard)/watchlist")({
 
     return { items: result.value, pro: proResult.status === "ok" && proResult.value.pro };
   },
-  head: () => ({
-    meta: [{ title: "Watchlist — PayGo" }],
-  }),
+  head: () =>
+    pageHead({
+      title: "Watchlist — PayGo",
+      description: "The products you're tracking, with their live prices and drop history.",
+      path: "/watchlist",
+      robots: "noindex, nofollow",
+    }),
 });

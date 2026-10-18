@@ -13,6 +13,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/toast";
 import { PayPalSubscriptionNotActive } from "@/lib/paypal/errors";
+import { pageHead } from "@/lib/seo";
 import { SubscriptionUnauthenticated } from "@/lib/subscription/errors";
 import { proErrorMessage } from "@/lib/subscription/messages";
 import { FREE_WATCHLIST_LIMIT, PRO_PRICE_LABEL } from "@/lib/subscription/plan";
@@ -227,7 +228,10 @@ export const Route = createFileRoute("/(dashboard)/pro")({
 
     return { signedIn: true, pro: result.value.pro, status: result.value.status };
   },
-  head: () => ({
-    meta: [{ title: "Pro — PayGo" }],
-  }),
+  head: () =>
+    pageHead({
+      title: "Pro — PayGo",
+      description: `Track unlimited products and get emailed the moment a price drops. PayGo Pro is ${PRO_PRICE_LABEL}.`,
+      path: "/pro",
+    }),
 });

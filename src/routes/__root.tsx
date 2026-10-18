@@ -10,6 +10,7 @@ import TanStackQueryDevtools from "@/providers/query/devtools";
 import "../globals.css";
 import { PayPalProvider } from "@paypal/react-paypal-js/sdk-v6";
 import { clientEnv } from "@/env/client";
+import { SITE_NAME } from "@/lib/seo";
 
 export interface RootContext {
   queryClient: QueryClient;
@@ -26,7 +27,21 @@ export const Route = createRootRouteWithContext<RootContext>()({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "Paygo",
+        title: "PayGo — never overpay",
+      },
+      {
+        property: "og:site_name",
+        content: SITE_NAME,
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+    ],
+    links: [
+      {
+        rel: "manifest",
+        href: "/manifest.json",
       },
     ],
   }),
