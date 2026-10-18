@@ -24,6 +24,9 @@ const config = defineConfig(({ mode }) => {
       options: { typeAware: true, typeCheck: true },
     },
     pack: tsdownConfig,
+    test: {
+      include: ["src/**/*.test.ts"],
+    },
     server: {
       allowedHosts: ["*.local", "strong-carefully-fly.ngrok-free.app"],
       proxy: {},

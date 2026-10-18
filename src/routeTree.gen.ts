@@ -21,8 +21,6 @@ import { Route as dashboardProductIdRouteImport } from './routes/(dashboard)/pro
 import { Route as ApiAlertsRunRouteImport } from './routes/api/alerts/run'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiChatIndexRouteImport } from './routes/api/chat/index'
-import { Route as ApiDocsRpcRouteImport } from './routes/api/docs/rpc'
-import { Route as ApiRpcSplatRouteImport } from './routes/api/rpc/$'
 
 const dashboardRouteRoute = dashboardRouteRouteImport.update({
   id: '/(dashboard)',
@@ -83,16 +81,6 @@ const ApiChatIndexRoute = ApiChatIndexRouteImport.update({
   path: '/api/chat/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiDocsRpcRoute = ApiDocsRpcRouteImport.update({
-  id: '/api/docs/rpc',
-  path: '/api/docs/rpc',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
-  id: '/api/rpc/$',
-  path: '/api/rpc/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/login': typeof authLoginRoute
@@ -105,8 +93,6 @@ export interface FileRoutesByFullPath {
   '/product/$id': typeof dashboardProductIdRoute
   '/api/alerts/run': typeof ApiAlertsRunRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/docs/rpc': typeof ApiDocsRpcRoute
-  '/api/rpc/$': typeof ApiRpcSplatRoute
   '/api/chat/': typeof ApiChatIndexRoute
 }
 export interface FileRoutesByTo {
@@ -120,8 +106,6 @@ export interface FileRoutesByTo {
   '/product/$id': typeof dashboardProductIdRoute
   '/api/alerts/run': typeof ApiAlertsRunRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/docs/rpc': typeof ApiDocsRpcRoute
-  '/api/rpc/$': typeof ApiRpcSplatRoute
   '/api/chat': typeof ApiChatIndexRoute
 }
 export interface FileRoutesById {
@@ -137,8 +121,6 @@ export interface FileRoutesById {
   '/(dashboard)/product/$id': typeof dashboardProductIdRoute
   '/api/alerts/run': typeof ApiAlertsRunRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/docs/rpc': typeof ApiDocsRpcRoute
-  '/api/rpc/$': typeof ApiRpcSplatRoute
   '/api/chat/': typeof ApiChatIndexRoute
 }
 export interface FileRouteTypes {
@@ -154,8 +136,6 @@ export interface FileRouteTypes {
     | '/product/$id'
     | '/api/alerts/run'
     | '/api/auth/$'
-    | '/api/docs/rpc'
-    | '/api/rpc/$'
     | '/api/chat/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -169,8 +149,6 @@ export interface FileRouteTypes {
     | '/product/$id'
     | '/api/alerts/run'
     | '/api/auth/$'
-    | '/api/docs/rpc'
-    | '/api/rpc/$'
     | '/api/chat'
   id:
     | '__root__'
@@ -185,8 +163,6 @@ export interface FileRouteTypes {
     | '/(dashboard)/product/$id'
     | '/api/alerts/run'
     | '/api/auth/$'
-    | '/api/docs/rpc'
-    | '/api/rpc/$'
     | '/api/chat/'
   fileRoutesById: FileRoutesById
 }
@@ -197,8 +173,6 @@ export interface RootRouteChildren {
   ApiSplatRoute: typeof ApiSplatRoute
   ApiAlertsRunRoute: typeof ApiAlertsRunRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  ApiDocsRpcRoute: typeof ApiDocsRpcRoute
-  ApiRpcSplatRoute: typeof ApiRpcSplatRoute
   ApiChatIndexRoute: typeof ApiChatIndexRoute
 }
 
@@ -288,20 +262,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/docs/rpc': {
-      id: '/api/docs/rpc'
-      path: '/api/docs/rpc'
-      fullPath: '/api/docs/rpc'
-      preLoaderRoute: typeof ApiDocsRpcRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/rpc/$': {
-      id: '/api/rpc/$'
-      path: '/api/rpc/$'
-      fullPath: '/api/rpc/$'
-      preLoaderRoute: typeof ApiRpcSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -332,8 +292,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSplatRoute: ApiSplatRoute,
   ApiAlertsRunRoute: ApiAlertsRunRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  ApiDocsRpcRoute: ApiDocsRpcRoute,
-  ApiRpcSplatRoute: ApiRpcSplatRoute,
   ApiChatIndexRoute: ApiChatIndexRoute,
 }
 export const routeTree = rootRouteImport
