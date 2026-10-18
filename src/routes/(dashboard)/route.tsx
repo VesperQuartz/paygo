@@ -1,21 +1,13 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { authServerFn } from "@/actions/auth";
+import { SiteHeader } from "@/components/site-header";
+
+const DashboardLayout = () => (
+  <>
+    <SiteHeader />
+    <Outlet />
+  </>
+);
 
 export const Route = createFileRoute("/(dashboard)")({
-  component: RouteComponent,
-  beforeLoad: async () => {
-    // const session = await authServerFn();
-    // if (!session) {
-    //   throw redirect({
-    //     to: "/login",
-    //     search: {
-    //       redirect: location?.href,
-    //     },
-    //   });
-    // }
-  },
+  component: DashboardLayout,
 });
-
-function RouteComponent() {
-  return <Outlet />;
-}

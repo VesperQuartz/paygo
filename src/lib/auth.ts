@@ -27,13 +27,21 @@ const authOptions: BetterAuthOptions = {
     sendOnSignIn: true,
     sendVerificationEmail: async ({ user, url }) => {
       const mail = new MailServer(transporter);
-      await mail.sendVerificationEmail({
+      const result = await mail.sendVerificationEmail({
         recipient: user.email,
         tokenUrl: url,
       });
+      if (result.status === "error") {
+        // Deliberate rethrow: the explicit resend endpoint surfaces this to the
+        // client ("couldn't resend"), while better-auth's signup/sign-in paths
+        // run the callback through `runInBackgroundOrAwait`, which swallows and
+        // logs it — so a mail outage never blocks account creation. The cause
+        // is logged once, server-side, inside the mail service.
+        throw result.error;
+      }
     },
     afterEmailVerification: async (data) => {
-      console.log(data);
+      console.log(`[auth] email verified for user ${data.id}`);
     },
   },
   database: drizzleAdapter(db, {

@@ -1,14 +1,17 @@
-import { Pool } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-serverless";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 import { serverEnv } from "@/env/server";
 import { authRelations } from "@/repo/schema/auth.schema";
 
-// For Node.js - make sure to install the 'ws' and 'bufferutil' packages
-//neonConfig.webSocketConstructor = ws;
-//
+const connectionString = String(serverEnv.DB_URL);
+
+// Render Postgres (and other hosted databases) require TLS for external
+// connections; local development databases typically don't speak TLS.
+const isLocal = connectionString.includes("localhost") || connectionString.includes("127.0.0.1");
 
 const sql = new Pool({
-  connectionString: String(serverEnv.DB_URL),
+  connectionString,
+  ssl: isLocal ? false : true,
 });
 
 export const db = drizzle({

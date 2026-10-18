@@ -7,7 +7,10 @@ const env = z
     DB_URL: z.string().optional(),
     MAIL_USER: z.string().optional(),
     PAY_SECRET: z.string().optional(),
+    PAY_PRO_PLAN_ID: z.string().optional(),
     MAIL_PASS: z.string().optional(),
+    CHANNEL3_API_KEY: z.string().optional(),
+    ALERTS_SECRET: z.string().optional(),
   })
   .readonly();
 

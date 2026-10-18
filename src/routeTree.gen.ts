@@ -11,8 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as dashboardRouteRouteImport } from './routes/(dashboard)/route'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
+import { Route as authSignupRouteImport } from './routes/(auth)/signup'
 import { Route as dashboardIndexRouteImport } from './routes/(dashboard)/index'
+import { Route as dashboardProRouteImport } from './routes/(dashboard)/pro'
+import { Route as dashboardSearchRouteImport } from './routes/(dashboard)/search'
+import { Route as dashboardWatchlistRouteImport } from './routes/(dashboard)/watchlist'
 import { Route as ApiSplatRouteImport } from './routes/api/$'
+import { Route as dashboardProductIdRouteImport } from './routes/(dashboard)/product/$id'
+import { Route as ApiAlertsRunRouteImport } from './routes/api/alerts/run'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiChatIndexRouteImport } from './routes/api/chat/index'
 import { Route as ApiDocsRpcRouteImport } from './routes/api/docs/rpc'
@@ -27,14 +33,44 @@ const authLoginRoute = authLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const authSignupRoute = authSignupRouteImport.update({
+  id: '/(auth)/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const dashboardIndexRoute = dashboardIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => dashboardRouteRoute,
 } as any)
+const dashboardProRoute = dashboardProRouteImport.update({
+  id: '/pro',
+  path: '/pro',
+  getParentRoute: () => dashboardRouteRoute,
+} as any)
+const dashboardSearchRoute = dashboardSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => dashboardRouteRoute,
+} as any)
+const dashboardWatchlistRoute = dashboardWatchlistRouteImport.update({
+  id: '/watchlist',
+  path: '/watchlist',
+  getParentRoute: () => dashboardRouteRoute,
+} as any)
 const ApiSplatRoute = ApiSplatRouteImport.update({
   id: '/api/$',
   path: '/api/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const dashboardProductIdRoute = dashboardProductIdRouteImport.update({
+  id: '/product/$id',
+  path: '/product/$id',
+  getParentRoute: () => dashboardRouteRoute,
+} as any)
+const ApiAlertsRunRoute = ApiAlertsRunRouteImport.update({
+  id: '/api/alerts/run',
+  path: '/api/alerts/run',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -60,8 +96,14 @@ const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/login': typeof authLoginRoute
+  '/signup': typeof authSignupRoute
+  '/pro': typeof dashboardProRoute
+  '/search': typeof dashboardSearchRoute
+  '/watchlist': typeof dashboardWatchlistRoute
   '/api/$': typeof ApiSplatRoute
   '/': typeof dashboardIndexRoute
+  '/product/$id': typeof dashboardProductIdRoute
+  '/api/alerts/run': typeof ApiAlertsRunRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/docs/rpc': typeof ApiDocsRpcRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
@@ -69,8 +111,14 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/login': typeof authLoginRoute
+  '/signup': typeof authSignupRoute
+  '/pro': typeof dashboardProRoute
+  '/search': typeof dashboardSearchRoute
+  '/watchlist': typeof dashboardWatchlistRoute
   '/api/$': typeof ApiSplatRoute
   '/': typeof dashboardIndexRoute
+  '/product/$id': typeof dashboardProductIdRoute
+  '/api/alerts/run': typeof ApiAlertsRunRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/docs/rpc': typeof ApiDocsRpcRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
@@ -80,8 +128,14 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(dashboard)': typeof dashboardRouteRouteWithChildren
   '/(auth)/login': typeof authLoginRoute
+  '/(auth)/signup': typeof authSignupRoute
+  '/(dashboard)/pro': typeof dashboardProRoute
+  '/(dashboard)/search': typeof dashboardSearchRoute
+  '/(dashboard)/watchlist': typeof dashboardWatchlistRoute
   '/api/$': typeof ApiSplatRoute
   '/(dashboard)/': typeof dashboardIndexRoute
+  '/(dashboard)/product/$id': typeof dashboardProductIdRoute
+  '/api/alerts/run': typeof ApiAlertsRunRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/docs/rpc': typeof ApiDocsRpcRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
@@ -91,8 +145,14 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/login'
+    | '/signup'
+    | '/pro'
+    | '/search'
+    | '/watchlist'
     | '/api/$'
     | '/'
+    | '/product/$id'
+    | '/api/alerts/run'
     | '/api/auth/$'
     | '/api/docs/rpc'
     | '/api/rpc/$'
@@ -100,8 +160,14 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
+    | '/signup'
+    | '/pro'
+    | '/search'
+    | '/watchlist'
     | '/api/$'
     | '/'
+    | '/product/$id'
+    | '/api/alerts/run'
     | '/api/auth/$'
     | '/api/docs/rpc'
     | '/api/rpc/$'
@@ -110,8 +176,14 @@ export interface FileRouteTypes {
     | '__root__'
     | '/(dashboard)'
     | '/(auth)/login'
+    | '/(auth)/signup'
+    | '/(dashboard)/pro'
+    | '/(dashboard)/search'
+    | '/(dashboard)/watchlist'
     | '/api/$'
     | '/(dashboard)/'
+    | '/(dashboard)/product/$id'
+    | '/api/alerts/run'
     | '/api/auth/$'
     | '/api/docs/rpc'
     | '/api/rpc/$'
@@ -121,7 +193,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   dashboardRouteRoute: typeof dashboardRouteRouteWithChildren
   authLoginRoute: typeof authLoginRoute
+  authSignupRoute: typeof authSignupRoute
   ApiSplatRoute: typeof ApiSplatRoute
+  ApiAlertsRunRoute: typeof ApiAlertsRunRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiDocsRpcRoute: typeof ApiDocsRpcRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
@@ -144,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(auth)/signup': {
+      id: '/(auth)/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof authSignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(dashboard)/': {
       id: '/(dashboard)/'
       path: '/'
@@ -151,11 +232,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof dashboardIndexRouteImport
       parentRoute: typeof dashboardRouteRoute
     }
+    '/(dashboard)/pro': {
+      id: '/(dashboard)/pro'
+      path: '/pro'
+      fullPath: '/pro'
+      preLoaderRoute: typeof dashboardProRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
+    '/(dashboard)/search': {
+      id: '/(dashboard)/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof dashboardSearchRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
+    '/(dashboard)/watchlist': {
+      id: '/(dashboard)/watchlist'
+      path: '/watchlist'
+      fullPath: '/watchlist'
+      preLoaderRoute: typeof dashboardWatchlistRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
     '/api/$': {
       id: '/api/$'
       path: '/api/$'
       fullPath: '/api/$'
       preLoaderRoute: typeof ApiSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(dashboard)/product/$id': {
+      id: '/(dashboard)/product/$id'
+      path: '/product/$id'
+      fullPath: '/product/$id'
+      preLoaderRoute: typeof dashboardProductIdRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
+    '/api/alerts/run': {
+      id: '/api/alerts/run'
+      path: '/api/alerts/run'
+      fullPath: '/api/alerts/run'
+      preLoaderRoute: typeof ApiAlertsRunRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -190,11 +306,19 @@ declare module '@tanstack/react-router' {
 }
 
 interface dashboardRouteRouteChildren {
+  dashboardProRoute: typeof dashboardProRoute
+  dashboardSearchRoute: typeof dashboardSearchRoute
+  dashboardWatchlistRoute: typeof dashboardWatchlistRoute
   dashboardIndexRoute: typeof dashboardIndexRoute
+  dashboardProductIdRoute: typeof dashboardProductIdRoute
 }
 
 const dashboardRouteRouteChildren: dashboardRouteRouteChildren = {
+  dashboardProRoute: dashboardProRoute,
+  dashboardSearchRoute: dashboardSearchRoute,
+  dashboardWatchlistRoute: dashboardWatchlistRoute,
   dashboardIndexRoute: dashboardIndexRoute,
+  dashboardProductIdRoute: dashboardProductIdRoute,
 }
 
 const dashboardRouteRouteWithChildren = dashboardRouteRoute._addFileChildren(
@@ -204,7 +328,9 @@ const dashboardRouteRouteWithChildren = dashboardRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   dashboardRouteRoute: dashboardRouteRouteWithChildren,
   authLoginRoute: authLoginRoute,
+  authSignupRoute: authSignupRoute,
   ApiSplatRoute: ApiSplatRoute,
+  ApiAlertsRunRoute: ApiAlertsRunRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiDocsRpcRoute: ApiDocsRpcRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
