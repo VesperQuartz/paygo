@@ -9,7 +9,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useCallback } from "react";
 
 const SearchPage = () => {
-  const { q, deep } = Route.useSearch();
+  const { q = "", deep } = Route.useSearch();
   const navigate = Route.useNavigate();
   const searchFn = useServerFn(searchProducts);
 
@@ -58,10 +58,16 @@ const SearchPage = () => {
 
 export const Route = createFileRoute("/(dashboard)/search")({
   component: SearchPage,
-  validateSearch: (search: Record<string, unknown>): { q: string; deep?: boolean } => {
-    const q = typeof search.q === "string" ? search.q : "";
+  // Keep `q` absent (not "") when there is no query. The URL search parser
+  // drops empty-string params, so manufacturing `q: ""` would make every
+  // request look out of date and trigger an endless redirect loop.
+  validateSearch: (search: Record<string, unknown>): { q?: string; deep?: boolean } => {
+    const q = typeof search.q === "string" && search.q.length > 0 ? search.q : undefined;
     const deep = search.deep === true || search.deep === "1" || search.deep === "true";
-    return deep ? { q, deep } : { q };
+    return {
+      ...(q === undefined ? {} : { q }),
+      ...(deep ? { deep } : {}),
+    };
   },
   head: () =>
     pageHead({

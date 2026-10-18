@@ -29,7 +29,7 @@ export const SiteHeader = () => {
         <nav className="flex items-center gap-1 sm:gap-2">
           <Link
             to="/search"
-            search={{ q: "" }}
+            search={{}}
             className={buttonVariants({ variant: "ghost", size: "sm" })}
           >
             Search

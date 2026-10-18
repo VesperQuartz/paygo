@@ -101,7 +101,7 @@ const WatchlistPage = () => {
           Find something you're not ready to buy, open its page, and hit "Watch price". PayGo tracks
           the price for you.
         </p>
-        <Link to="/search" search={{ q: "" }} className={buttonVariants({ size: "sm" })}>
+        <Link to="/search" search={{}} className={buttonVariants({ size: "sm" })}>
           Search products
         </Link>
       </div>
