@@ -9,6 +9,7 @@ export const WATCHLIST_OPERATIONS = [
   "isWatchlistAtLimit",
   "runPriceAlerts",
   "listWatchlistForAlerts",
+  "listWatchedProductIds",
   "markWatchlistItemChecked",
   "markWatchlistItemAlerted",
 ] as const;

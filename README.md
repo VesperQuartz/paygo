@@ -34,24 +34,31 @@ TanStack Start (SSR, Node)
   ├── PayPal   ──  orders + subscriptions (sandbox)
   ├── Drizzle  ──  PostgreSQL on Render
   └── SMTP     ──  price-drop emails (React Email templates)
-        ▲
-        │  scheduled checks (x-alerts-secret)
-    GET/POST /api/alerts/run  ◀──  Render cron job (Render Workflows)
+
+Alerts pipeline — Render Workflows ("paygo-alerts")
+  Render cron job (daily)
+      │  Render API: start task
+      ▼
+  runPriceAlerts               root task: fans out one run per watched product
+      └── checkProductAlerts   one watched product per run:
+                               fetch live price → email Pro drops → advance alert state
 ```
 
-- The scheduled job re-checks every watched product, compares prices against each item's last-alerted watermark, and emails only genuine drops to Pro accounts.
-- Pro gating is resolved server-side from the subscription table (live PayPal status), never from the client.
+- The daily run fans out one independent task run per watched product — parallel instances, per-task retries, and full run history in the Render dashboard.
+- Each item stores the price it was last alerted at, so it only emails again after dropping below that watermark — and only for Pro accounts, resolved server-side from the subscription table.
+- "Check now" runs the same per-product logic inline for instant feedback; the secret-guarded `GET/POST /api/alerts/run` remains for manual or external scheduling.
 
 ### Sponsor tech
 
 - **Channel3** — product search, multi-merchant offers, 90-day price history, and "more like this" recommendations.
 - **PayPal** — subscriptions (Pro plan), plus sandbox order/capture flows for checkout.
-- **Render** — web service, managed PostgreSQL, and the scheduled alert job.
+- **Render** — web service, managed PostgreSQL, and the alert job as a **Render Workflow**: a daily cron dispatches the root task, which fans out per-product runs (`src/workflows/`).
 
 ### Engineering notes
 
 - **Result-first services.** Service calls (Channel3, PayPal, mail) return `Result` values with tagged errors instead of throwing; raw upstream errors are mapped to user-safe messages at the edge and validated with runtime schemas. The audit lives in [`docs/better-result-adoption.md`](docs/better-result-adoption.md).
 - **Alert idempotency.** Each watched item stores the price it was last alerted at, so an item only emails again after dropping below that watermark.
+- **Fan-out with honest failure counts.** The workflow's root task fans out one task run per watched product (`Promise.allSettled`); a product still failing after platform retries is counted, never fatal to the rest of the batch.
 - **Tests.** `pnpm run test` — unit tests for the domain logic (alerts, subscription, watchlist limits, wire codecs).
 
 ## Try the live demo
@@ -94,6 +101,13 @@ pnpm run test       # unit tests
 pnpm run lint       # lint + format + typecheck (Vite+)
 ```
 
+To run the alert workflow locally (needs the [Render CLI](https://render.com/docs/cli)):
+
+```bash
+pnpm run ts:build                                    # compile the task entry
+render workflows dev -- node dist/workflows/index.mjs   # local task server on :8120
+```
+
 ## Project layout
 
 ```
@@ -103,6 +117,8 @@ src/actions/    server functions (auth, watchlist, alerts, subscription, paypal)
 src/services/   mail + PayPal integrations
 src/lib/        domain logic (alerts runner, Channel3, subscription, auth session)
 src/repo/       Drizzle schema + repositories
+src/workflows/  Render Workflow task definitions (price-alert fan-out)
+src/scripts/    cron dispatch entry (starts the workflow's root task)
 docs/           engineering notes
 ```
 

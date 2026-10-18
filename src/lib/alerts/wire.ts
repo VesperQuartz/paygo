@@ -21,6 +21,31 @@ export interface AlertsRunSummary {
   skipped: number;
 }
 
+/** Field-wise sum of per-product summaries, e.g. when a run fans out over products. */
+export const mergeAlertsSummaries = (
+  summaries: ReadonlyArray<AlertsRunSummary>,
+): AlertsRunSummary =>
+  summaries.reduce<AlertsRunSummary>(
+    (total, summary) => ({
+      productsChecked: total.productsChecked + summary.productsChecked,
+      productsFailed: total.productsFailed + summary.productsFailed,
+      itemsChecked: total.itemsChecked + summary.itemsChecked,
+      alertsSent: total.alertsSent + summary.alertsSent,
+      alertsFailed: total.alertsFailed + summary.alertsFailed,
+      proRequired: total.proRequired + summary.proRequired,
+      skipped: total.skipped + summary.skipped,
+    }),
+    {
+      productsChecked: 0,
+      productsFailed: 0,
+      itemsChecked: 0,
+      alertsSent: 0,
+      alertsFailed: 0,
+      proRequired: 0,
+      skipped: 0,
+    },
+  );
+
 const summaryToWire = z.object({
   productsChecked: z.number().int().nonnegative(),
   productsFailed: z.number().int().nonnegative(),

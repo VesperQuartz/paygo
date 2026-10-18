@@ -173,12 +173,12 @@ export interface WatchlistAlertItem extends WatchlistEntry {
 }
 
 /**
- * Alert candidates for a price check — every user's rows, or a single user's
- * when `userId` is given. Joins the owner (email + active subscription) so the
- * job can decide delivery without further lookups.
+ * Alert candidates for a price check — every user's rows, narrowed by `userId`
+ * and/or `productId` when given. Joins the owner (email + active subscription)
+ * so the job can decide delivery without further lookups.
  */
 export const listWatchlistItemsForAlerts = (
-  userId?: string,
+  scope: { userId?: string; productId?: string } = {},
 ): Promise<Result<WatchlistAlertItem[], WatchlistStorageError>> =>
   run("listWatchlistForAlerts", async () => {
     const rows = await db
@@ -189,7 +189,12 @@ export const listWatchlistItemsForAlerts = (
         subscription,
         and(eq(subscription.userId, user.id), eq(subscription.status, ACTIVE_SUBSCRIPTION_STATUS)),
       )
-      .where(userId ? eq(watchlistItem.userId, userId) : undefined)
+      .where(
+        and(
+          scope.userId ? eq(watchlistItem.userId, scope.userId) : undefined,
+          scope.productId ? eq(watchlistItem.productId, scope.productId) : undefined,
+        ),
+      )
       .orderBy(asc(watchlistItem.productId));
 
     return rows.map(({ item, email, proSubscriptionId }) => ({
@@ -198,6 +203,23 @@ export const listWatchlistItemsForAlerts = (
       isPro: proSubscriptionId != null,
       lastAlertedPriceAmount: item.lastAlertedPriceAmount,
     }));
+  });
+
+/**
+ * Distinct products watched by anyone, or by one user — the unit the alert
+ * workflow fans out one task run per product.
+ */
+export const listWatchedProductIds = (
+  scope: { userId?: string } = {},
+): Promise<Result<string[], WatchlistStorageError>> =>
+  run("listWatchedProductIds", async () => {
+    const rows = await db
+      .selectDistinct({ productId: watchlistItem.productId })
+      .from(watchlistItem)
+      .where(scope.userId ? eq(watchlistItem.userId, scope.userId) : undefined)
+      .orderBy(asc(watchlistItem.productId));
+
+    return rows.map((row) => row.productId);
   });
 
 /** Records that the alert job looked at this item, drop or not. */

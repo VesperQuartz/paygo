@@ -3,6 +3,7 @@ import z from "zod";
 const env = z
   .object({
     SERVER_URL: z.url().optional(),
+    VITE_BASE_URL: z.string().optional(),
     BETTER_AUTH_SECRET: z.string().optional(),
     DB_URL: z.string().optional(),
     MAIL_USER: z.string().optional(),

@@ -2,7 +2,7 @@ import { Result, isPanic } from "better-result";
 import { describe, expect, it } from "vite-plus/test";
 
 import { WatchlistStorageError, WatchlistUnauthenticated } from "@/lib/watchlist/errors";
-import { alertsRunCodec } from "./wire";
+import { alertsRunCodec, mergeAlertsSummaries } from "./wire";
 
 const expectPanic = (run: () => unknown) => {
   try {
@@ -69,5 +69,36 @@ describe("alertsRunCodec", () => {
         error: { _tag: "WatchlistStorageError", operation: "not-an-operation" },
       }),
     );
+  });
+});
+
+describe("mergeAlertsSummaries", () => {
+  it("sums every counter across per-product summaries", () => {
+    const merged = mergeAlertsSummaries([
+      { ...sampleSummary, productsChecked: 1 },
+      {
+        productsChecked: 1,
+        productsFailed: 1,
+        itemsChecked: 0,
+        alertsSent: 0,
+        alertsFailed: 0,
+        proRequired: 0,
+        skipped: 0,
+      },
+    ]);
+
+    expect(merged).toEqual({ ...sampleSummary, productsFailed: 1 });
+  });
+
+  it("is the zero summary for no runs", () => {
+    expect(mergeAlertsSummaries([])).toEqual({
+      productsChecked: 0,
+      productsFailed: 0,
+      itemsChecked: 0,
+      alertsSent: 0,
+      alertsFailed: 0,
+      proRequired: 0,
+      skipped: 0,
+    });
   });
 });
