@@ -65,6 +65,7 @@ const ProPage = () => {
       toast.add({
         title: "Couldn't start the subscription",
         description: proErrorMessage(result.error),
+        type: "error",
       });
       // Abort the PayPal flow instead of letting the SDK surface a raw error.
       throw result.error;

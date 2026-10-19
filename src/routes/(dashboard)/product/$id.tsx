@@ -84,6 +84,7 @@ const ProductPage = () => {
     toast.add({
       title: "Couldn't switch variant",
       description: channel3ErrorMessage(error),
+      type: "error",
     });
   }, []);
 

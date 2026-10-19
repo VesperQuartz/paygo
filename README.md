@@ -8,9 +8,9 @@ Built for the **PayPal AI Hackathon 2026**.
 
 ## What it does
 
-- **Search by intent.** Ask for "wireless earbuds under $200" and PayGo searches Channel3's universal product catalog — live results and offers across thousands of retailers, no keyword fiddling.
+- **Search by intent.** Ask for "wireless earbuds under $200" and PayGo searches Channel3's universal product catalog live results and offers across thousands of retailers, no keyword fiddling.
 - **A price verdict, not just a price.** Every product page pulls 90 days of price history and today's merchant offers, then tells you plainly whether this is a good moment to buy (or whether you should wait).
-- **Compare offers across merchants.** One product, every seller Channel3 knows about — prices and availability side by side, best deal highlighted.
+- **Compare offers across merchants.** One product, every seller Channel3 knows about prices and availability side by side, best deal highlighted.
 - **Watch prices and get alerted.** Add products to your watchlist. Free accounts watch up to 3 items and check prices on demand; **PayGo Pro** ($4.99/mo) watches unlimited items and emails you when a price actually drops.
 - **Real PayPal subscriptions.** The Pro upgrade is a genuine PayPal subscription: create → approve in the PayPal modal → PayGo verifies the subscription server-side before unlocking Pro.
 
@@ -44,8 +44,8 @@ Alerts pipeline — Render Workflows ("paygo-alerts")
                                fetch live price → email Pro drops → advance alert state
 ```
 
-- The daily run fans out one independent task run per watched product — parallel instances, per-task retries, and full run history in the Render dashboard.
-- Each item stores the price it was last alerted at, so it only emails again after dropping below that watermark — and only for Pro accounts, resolved server-side from the subscription table.
+- The daily run fans out one independent task run per watched product parallel instances, per-task retries, and full run history in the Render dashboard.
+- Each item stores the price it was last alerted at, so it only emails again after dropping below that watermark and only for Pro accounts, resolved server-side from the subscription table.
 - "Check now" runs the same per-product logic inline for instant feedback; the secret-guarded `GET/POST /api/alerts/run` remains for manual or external scheduling.
 
 ### Sponsor tech
@@ -56,7 +56,7 @@ Alerts pipeline — Render Workflows ("paygo-alerts")
 
 ### Engineering notes
 
-- **Result-first services.** Service calls (Channel3, PayPal, mail) return `Result` values with tagged errors instead of throwing; raw upstream errors are mapped to user-safe messages at the edge and validated with runtime schemas. The audit lives in [`docs/better-result-adoption.md`](docs/better-result-adoption.md).
+- **Result-first services.** Service calls (Channel3, PayPal, mail) return `Result` values with tagged errors instead of throwing; raw upstream errors are mapped to user-safe messages at the edge and validated with runtime schemas.
 - **Alert idempotency.** Each watched item stores the price it was last alerted at, so an item only emails again after dropping below that watermark.
 - **Fan-out with honest failure counts.** The workflow's root task fans out one task run per watched product (`Promise.allSettled`); a product still failing after platform retries is counted, never fatal to the rest of the batch.
 - **Tests.** `pnpm run test` — unit tests for the domain logic (alerts, subscription, watchlist limits, wire codecs).
@@ -119,7 +119,6 @@ src/lib/        domain logic (alerts runner, Channel3, subscription, auth sessio
 src/repo/       Drizzle schema + repositories
 src/workflows/  Render Workflow task definitions (price-alert fan-out)
 src/scripts/    cron dispatch entry (starts the workflow's root task)
-docs/           engineering notes
 ```
 
 ## License

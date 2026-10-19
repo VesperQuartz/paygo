@@ -68,6 +68,7 @@ const WatchlistPage = () => {
       toast.add({
         title: "Couldn't check prices",
         description: watchlistErrorMessage(error),
+        type: "error",
       });
     } finally {
       setIsChecking(false);

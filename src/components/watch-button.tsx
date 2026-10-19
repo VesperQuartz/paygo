@@ -76,6 +76,7 @@ export const WatchButton = ({
       toast.add({
         title: watched ? "Couldn't remove the product" : "Couldn't save the product",
         description: watchlistErrorMessage(error),
+        type: "error",
       });
     } finally {
       setIsPending(false);
