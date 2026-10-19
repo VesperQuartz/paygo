@@ -20,7 +20,6 @@ import { Route as ApiSplatRouteImport } from './routes/api/$'
 import { Route as dashboardProductIdRouteImport } from './routes/(dashboard)/product/$id'
 import { Route as ApiAlertsRunRouteImport } from './routes/api/alerts/run'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as ApiChatIndexRouteImport } from './routes/api/chat/index'
 
 const dashboardRouteRoute = dashboardRouteRouteImport.update({
   id: '/(dashboard)',
@@ -76,11 +75,6 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiChatIndexRoute = ApiChatIndexRouteImport.update({
-  id: '/api/chat/',
-  path: '/api/chat/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/login': typeof authLoginRoute
@@ -93,7 +87,6 @@ export interface FileRoutesByFullPath {
   '/product/$id': typeof dashboardProductIdRoute
   '/api/alerts/run': typeof ApiAlertsRunRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/chat/': typeof ApiChatIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof authLoginRoute
@@ -106,7 +99,6 @@ export interface FileRoutesByTo {
   '/product/$id': typeof dashboardProductIdRoute
   '/api/alerts/run': typeof ApiAlertsRunRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/chat': typeof ApiChatIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -121,7 +113,6 @@ export interface FileRoutesById {
   '/(dashboard)/product/$id': typeof dashboardProductIdRoute
   '/api/alerts/run': typeof ApiAlertsRunRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/chat/': typeof ApiChatIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -136,7 +127,6 @@ export interface FileRouteTypes {
     | '/product/$id'
     | '/api/alerts/run'
     | '/api/auth/$'
-    | '/api/chat/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -149,7 +139,6 @@ export interface FileRouteTypes {
     | '/product/$id'
     | '/api/alerts/run'
     | '/api/auth/$'
-    | '/api/chat'
   id:
     | '__root__'
     | '/(dashboard)'
@@ -163,7 +152,6 @@ export interface FileRouteTypes {
     | '/(dashboard)/product/$id'
     | '/api/alerts/run'
     | '/api/auth/$'
-    | '/api/chat/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -173,7 +161,6 @@ export interface RootRouteChildren {
   ApiSplatRoute: typeof ApiSplatRoute
   ApiAlertsRunRoute: typeof ApiAlertsRunRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  ApiChatIndexRoute: typeof ApiChatIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -255,13 +242,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/chat/': {
-      id: '/api/chat/'
-      path: '/api/chat'
-      fullPath: '/api/chat/'
-      preLoaderRoute: typeof ApiChatIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -292,7 +272,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSplatRoute: ApiSplatRoute,
   ApiAlertsRunRoute: ApiAlertsRunRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  ApiChatIndexRoute: ApiChatIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
